@@ -27,7 +27,7 @@ const CategorySchema = new Schema<ICategory>({
     default: 'DollarSign',
   },
   userId: {
-    type: Schema.Types.ObjectId,
+    type: Types.ObjectId,
     ref: 'User',
     required: true,
   },

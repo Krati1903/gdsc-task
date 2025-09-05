@@ -126,7 +126,7 @@ export default function Dashboard() {
     }
   }, [session]);
 
-  const handleFilterChange = (newFilters: Record<string, any>) => {
+  const handleFilterChange = (newFilters: Record<string, unknown>) => {
     setFilters(newFilters);
     fetchTransactions(newFilters);
   };

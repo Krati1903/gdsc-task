@@ -6,7 +6,7 @@ import Transaction from '@/models/Transaction';
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -15,11 +15,13 @@ export async function PUT(
     }
 
     const { amount, description, type, category, date } = await request.json();
+    const params = await context.params;
+    const { id } = params;
 
     await dbConnect();
 
     const transaction = await Transaction.findOneAndUpdate(
-      { _id: params.id, userId: session.user.id },
+      { _id: id, userId: session.user.id },
       {
         ...(amount && { amount: parseFloat(amount) }),
         ...(description && { description }),
@@ -49,7 +51,7 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -57,10 +59,12 @@ export async function DELETE(
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
 
+    const params = await context.params;
+    const { id } = params;
     await dbConnect();
 
     const transaction = await Transaction.findOneAndDelete({
-      _id: params.id,
+      _id: id,
       userId: session.user.id,
     });
 

@@ -5,6 +5,18 @@ import dbConnect from '@/lib/mongodb';
 import Transaction from '@/models/Transaction';
 import { startOfMonth, endOfMonth } from 'date-fns';
 
+interface DateQuery {
+  $gte?: Date;
+  $lte?: Date;
+}
+
+interface TransactionQuery {
+  userId: string;
+  type?: 'income' | 'expense';
+  category?: string;
+  date?: DateQuery;
+}
+
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
@@ -22,7 +34,7 @@ export async function GET(request: NextRequest) {
     const startDate = searchParams.get('startDate');
     const endDate = searchParams.get('endDate');
 
-    const query: Record<string, any> = { userId: session.user.id };
+    const query: TransactionQuery = { userId: session.user.id };
 
     if (type && (type === 'income' || type === 'expense')) {
       query.type = type;

@@ -20,7 +20,7 @@ interface Category {
 
 interface FilterPanelProps {
   categories: Category[];
-  onFilterChange: (filters: Record<string, any>) => void;
+  onFilterChange: (filters: Record<string, unknown>) => void;
 }
 
 export function FilterPanel({ categories, onFilterChange }: FilterPanelProps) {
@@ -32,7 +32,7 @@ export function FilterPanel({ categories, onFilterChange }: FilterPanelProps) {
     endDate: null as Date | null,
   });
 
-  const handleFilterChange = (key: string, value: any) => {
+  const handleFilterChange = (key: string, value: unknown) => {
     const newFilters = { ...filters, [key]: value };
     setFilters(newFilters);
     onFilterChange(newFilters);
